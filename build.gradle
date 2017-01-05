@@ -1,0 +1,59 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+    ext.kotlin_version = '1.0.6'
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    jcenter()
+}
+
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'kotlin'
+apply plugin: 'application'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+ext.dropwizardVersion = '1.0.5'
+
+// These should match Dropwizard's versions
+ext.jettyVersion = '9.3.9.v20160517'
+ext.dropwizardGuiceyVersion = '4.0.1'
+ext.guiceVersion = '4.1.0'
+ext.dropwizardWebsocketsVersion = '1.0.0-2-SNAPSHOT'
+ext.jacksonVersion = '2.7.8'
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion"
+
+    compile "ru.vyarus:dropwizard-guicey:$dropwizardGuiceyVersion"
+    compile "com.google.inject:guice:$guiceVersion"
+
+    compile "com.liveperson:dropwizard-websockets:$dropwizardWebsocketsVersion"
+    compile "org.eclipse.jetty.websocket:javax-websocket-server-impl:$jettyVersion"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.3'
+}
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+}

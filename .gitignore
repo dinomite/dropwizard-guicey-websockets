@@ -1,0 +1,6 @@
+.*.sw*
+.gradle
+.idea/
+build/
+*.iml
+/lib/
